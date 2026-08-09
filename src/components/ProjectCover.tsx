@@ -274,6 +274,66 @@ function Art({ kind, accent }: { kind: ArtKind; accent: string }) {
       )
     }
 
+    /* Auto-battler: two teams facing off across a lane, elemental tokens. */
+    case 'battler': {
+      const rows = [58, 100, 142]
+      return (
+        <svg {...common}>
+          <line
+            x1={200}
+            y1={30}
+            x2={200}
+            y2={170}
+            stroke={accent}
+            strokeWidth={1.2}
+            strokeDasharray="4 6"
+            opacity={0.7}
+          />
+          {rows.map((y, r) =>
+            [0, 1, 2].map((c) => (
+              <g key={`l-${r}-${c}`}>
+                <rect
+                  x={40 + c * 44}
+                  y={y - 16}
+                  width={34}
+                  height={32}
+                  rx={6}
+                  fill={`color-mix(in oklch, ${accent} ${14 + c * 8}%, transparent)`}
+                  stroke={accent}
+                  strokeWidth={1.1}
+                  strokeOpacity={0.75}
+                />
+                <circle cx={57 + c * 44} cy={y} r={5} fill={accent} opacity={0.75} />
+              </g>
+            )),
+          )}
+          {rows.map((y, r) =>
+            [0, 1, 2].map((c) => (
+              <g key={`r-${r}-${c}`}>
+                <rect
+                  x={226 + c * 44}
+                  y={y - 16}
+                  width={34}
+                  height={32}
+                  rx={6}
+                  fill="currentColor"
+                  fillOpacity={0.06}
+                  stroke="currentColor"
+                  strokeOpacity={0.22}
+                  strokeWidth={1.1}
+                />
+                <path
+                  d={`M${243 + c * 44} ${y - 6} l6 6 l-6 6 l-6 -6 Z`}
+                  fill="currentColor"
+                  opacity={0.3}
+                />
+              </g>
+            )),
+          )}
+        </svg>
+      )
+    }
+
     /* Pool: table, balls and a computed bank shot. */
     case 'pool':
       return (

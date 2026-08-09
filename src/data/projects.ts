@@ -4,6 +4,7 @@ export type ArtKind =
   | 'chart'
   | 'vision'
   | 'terrain'
+  | 'battler'
   | 'pool'
   | 'iso'
   | 'eco'
@@ -139,18 +140,20 @@ export const projects: Project[] = [
    */
   {
     slug: 'faeterra',
-    name: 'Faeterra',
-    tagline: 'Released on Steam',
+    name: 'FaeTerra',
+    tagline: 'PvP creature-collecting auto-battler · Steam',
     description:
-      'A PC title shipped on Steam, built at Juego Studios. Worked across gameplay systems, architecture and performance through to release.',
-    tech: ['Unity', 'C#', 'PC / Steam'],
+      'A free-to-play PvP auto-battler on Steam: players collect and evolve 121 creatures across 13 elemental types, build a team, and battle asynchronously in ranked and casual matches. Released May 2025. Contributed as part of the outsourced team at Juego Studios.',
+    tech: ['Unity', 'C#', 'PC / Steam', 'Async multiplayer'],
     bullets: [
-      'Contributed to gameplay feature development and system architecture through to a public Steam release.',
-      'Optimized runtime performance and memory for target PC hardware.',
+      'Built core gameplay systems — creature collection and evolution, team composition, and elemental matchup resolution.',
+      'Implemented asynchronous PvP and its supporting backend: matchmaking, ranked progression and state synchronization.',
+      'Developed player-facing UI across collection, deck building and match flow, plus internal tooling used by the team.',
+      'Optimized runtime performance and memory for target PC hardware through to release.',
     ],
-    links: [],
+    links: [{ label: 'Steam', href: 'https://store.steampowered.com/app/3011470/FaeTerra/' }],
     kind: 'game',
-    art: 'terrain',
+    art: 'battler',
     accent: ACCENTS.indigo,
   },
   {
@@ -173,14 +176,15 @@ export const projects: Project[] = [
   {
     slug: 'ultimate-cafe-franchise',
     name: 'Ultimate Cafe Franchise',
-    tagline: 'Mobile management sim',
+    tagline: 'Mobile management simulation',
     description:
-      'A mobile management/simulation game built at Juego Studios, covering gameplay systems and progression on mobile hardware.',
+      'A released mobile management simulation where players build and expand a cafe business. Developed at Juego Studios.',
     tech: ['Unity', 'C#', 'Mobile'],
     bullets: [
-      'Developed gameplay and progression systems using modular, pattern-based architecture.',
-      'Optimized runtime performance and memory for mobile devices.',
+      'Developed gameplay and progression systems on a modular, pattern-based architecture.',
+      'Optimized runtime performance and memory for a broad range of mobile devices.',
     ],
+    // TODO: add the store link — { label: 'Google Play', href: '...' }
     links: [],
     kind: 'game',
     art: 'iso',
@@ -191,12 +195,13 @@ export const projects: Project[] = [
     name: 'Lifestyle vs Carbon Footprints',
     tagline: 'Mobile game on sustainability',
     description:
-      'A mobile game built at Juego Studios that models how everyday lifestyle choices translate into carbon footprint outcomes.',
+      'A released mobile game that models how everyday lifestyle choices translate into carbon footprint outcomes. Developed at Juego Studios.',
     tech: ['Unity', 'C#', 'Mobile'],
     bullets: [
       'Implemented the simulation and scoring systems mapping player choices to footprint outcomes.',
       'Built the UI and data presentation layer for the mobile release.',
     ],
+    // TODO: add the store link — { label: 'Google Play', href: '...' }
     links: [],
     kind: 'game',
     art: 'eco',
