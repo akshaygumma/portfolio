@@ -1,14 +1,21 @@
-import { ArrowRight, MapPin } from 'lucide-react'
+import { Gamepad2, MapPin } from 'lucide-react'
 import { GithubIcon, LinkedinIcon } from '@/components/icons'
 import { buttonVariants } from '@/components/ui/button'
 import { ACCENTS } from '@/data/projects'
 import { cn } from '@/lib/utils'
 
 const highlights = [
-  { label: 'Agentic LLM pipelines', accent: ACCENTS.violet },
-  { label: 'RAG & vector search', accent: ACCENTS.cyan },
-  { label: 'Real-time game systems', accent: ACCENTS.indigo },
-  { label: 'MLOps', accent: ACCENTS.amber },
+  { label: 'Gameplay systems', accent: ACCENTS.indigo },
+  { label: 'Game AI & NPC behaviour', accent: ACCENTS.emerald },
+  { label: 'Real-time multiplayer', accent: ACCENTS.cyan },
+  { label: 'Performance & optimization', accent: ACCENTS.amber },
+  { label: 'Unity tooling', accent: ACCENTS.violet },
+]
+
+const stats = [
+  { value: '3+', label: 'Years exp.' },
+  { value: '4', label: 'Titles' },
+  { value: 'PC/Mobile', label: 'Platforms' },
 ]
 
 export function Hero() {
@@ -19,19 +26,19 @@ export function Hero() {
         Bangalore, India
       </div>
 
-      <p className="mt-6 font-mono text-sm text-primary">Hi, I'm</p>
+      <p className="mt-6 font-mono text-sm text-primary">Player 1 — Hi, I'm</p>
       <h1 className="mt-2 bg-gradient-to-br from-foreground via-foreground to-primary bg-clip-text text-5xl font-semibold tracking-tight text-transparent sm:text-7xl">
         Akshay Gumma
       </h1>
       <p className="mt-4 text-xl text-muted-foreground sm:text-2xl">
-        AI Engineer — Agentic Systems &amp; LLM Applications
+        Game Developer — Unity &amp; C#
       </p>
 
       <p className="mt-6 max-w-2xl text-balance text-base leading-relaxed text-muted-foreground sm:text-lg">
-        3 years of production software experience, now focused on agentic LLM systems. I design and
-        build multi-agent platforms that turn natural-language prompts into working, compiling
-        software — LangGraph orchestration, RAG over vector databases, schema-constrained LLM
-        outputs, and self-repairing feedback loops.
+        3 years building games at Juego Studios — from a PvP creature auto-battler on Steam to
+        mobile simulations. I build the systems underneath the fun: gameplay and progression,
+        human-like game AI, real-time multiplayer, and the performance work that keeps it all
+        running smoothly on PC and mobile.
       </p>
 
       <div className="mt-7 flex flex-wrap gap-2">
@@ -51,9 +58,9 @@ export function Hero() {
       </div>
 
       <div className="mt-9 flex flex-wrap items-center gap-3">
-        <a href="#projects" className={cn(buttonVariants({ size: 'lg' }))}>
-          See my work
-          <ArrowRight className="size-4" />
+        <a href="#games" className={cn(buttonVariants({ size: 'lg' }))}>
+          <Gamepad2 className="size-4" />
+          Press start
         </a>
         <a
           href="https://github.com/akshaygumma"
@@ -74,6 +81,17 @@ export function Hero() {
           LinkedIn
         </a>
       </div>
+
+      <dl className="glass mt-12 grid max-w-2xl grid-cols-3 divide-x divide-border rounded-lg border border-border">
+        {stats.map((s) => (
+          <div key={s.label} className="px-4 py-3">
+            <dt className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+              {s.label}
+            </dt>
+            <dd className="mt-1 font-mono text-base font-semibold sm:text-lg text-foreground">{s.value}</dd>
+          </div>
+        ))}
+      </dl>
     </section>
   )
 }

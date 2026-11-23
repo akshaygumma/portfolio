@@ -5,7 +5,7 @@ import { SpotlightCard } from '@/components/ui/spotlight-card'
 export function Skills() {
   return (
     <section id="skills" className="mx-auto max-w-5xl px-6 py-20">
-      <SectionHeading index="02" eyebrow="What I work with" title="Skills" />
+      <SectionHeading index="02" eyebrow="Skill tree" title="Skills" />
 
       <div className="mt-10 grid gap-6 sm:grid-cols-2">
         {skills.map((group) => (

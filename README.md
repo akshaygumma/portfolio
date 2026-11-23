@@ -34,8 +34,8 @@ instead, drop the file in `public/covers/` and set `image` on that project:
 
 ```ts
 {
-  slug: 'gaeon-ai',
-  image: '/covers/gaeon.png',   // ← overrides the generated art
+  slug: 'faeterra',
+  image: '/covers/faeterra.png',   // ← overrides the generated art
   ...
 }
 ```
@@ -48,7 +48,8 @@ rendered with `object-fit: cover`.
 
 Append to `projects` in `src/data/projects.ts`:
 
-- `kind` — `'flagship' | 'ml' | 'game'`, decides which section it lands in
+- `kind` — `'flagship' | 'game' | 'tool' | 'other'`, decides which section it lands in
+- `stats` / `loop` — flagship only: HUD stat row and core-loop strip
 - `art` — which generated cover to draw (`pipeline`, `neural`, `chart`,
   `vision`, `terrain`, `pool`, `iso`, `eco`)
 - `accent` — pick from `ACCENTS`; drives the cover, glow, badges and hover state

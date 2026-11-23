@@ -5,9 +5,9 @@ import { SpotlightCard } from '@/components/ui/spotlight-card'
 export function Experience() {
   return (
     <section id="experience" className="mx-auto max-w-5xl px-6 py-20">
-      <SectionHeading index="03" eyebrow="Where I've worked" title="Experience" />
+      <SectionHeading index="03" eyebrow="Career log" title="Experience" />
 
-      <SpotlightCard accent={ACCENTS.violet} tilt={0} className="mt-10 p-6 sm:p-8">
+      <SpotlightCard accent={ACCENTS.indigo} tilt={0} className="mt-10 p-6 sm:p-8">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
           <h4 className="text-lg font-semibold text-foreground">
             {experience.role} · {experience.company}

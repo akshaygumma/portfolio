@@ -9,7 +9,13 @@ export type ArtKind =
   | 'iso'
   | 'eco'
 
-export type ProjectKind = 'flagship' | 'ml' | 'game'
+/**
+ * - `flagship` — the big featured card at the top
+ * - `game`     — shipped / in-development games
+ * - `tool`     — game AI & tooling projects
+ * - `other`    — non-game work, shown compactly at the bottom
+ */
+export type ProjectKind = 'flagship' | 'game' | 'tool' | 'other'
 
 export interface Project {
   slug: string
@@ -25,10 +31,14 @@ export interface Project {
   /** Hex/CSS colour used for the cover, glow and badges. */
   accent: string
   /** Optional real screenshot — drop a file in `public/covers/` and set the
-   *  path here (e.g. '/covers/gaeon.png') to replace the generated art. */
+   *  path here (e.g. '/covers/faeterra.png') to replace the generated art. */
   image?: string
   /** Optional status pill, e.g. 'In development'. */
   status?: string
+  /** Flagship only: headline numbers shown as a HUD-style stat row. */
+  stats?: { value: string; label: string }[]
+  /** Flagship only: the core gameplay loop, drawn as a step strip. */
+  loop?: string[]
 }
 
 export const ACCENTS = {
@@ -43,101 +53,7 @@ export const ACCENTS = {
 } as const
 
 export const projects: Project[] = [
-  {
-    slug: 'gaeon-ai',
-    name: 'Gaeon AI',
-    tagline: 'Agentic game-generation platform',
-    description:
-      'An autonomous agent that plans, decomposes, generates, compiles, and self-repairs software from a plain-English prompt, targeting Unity as the runtime. The platform acts as an AI technical lead; the LLM is the senior engineer it manages.',
-    tech: [
-      'Python',
-      'LangGraph',
-      'FastAPI',
-      'pgvector',
-      'Groq / Gemini',
-      'Roslyn / .NET',
-      'Unity 6',
-      'GitHub Actions',
-    ],
-    bullets: [
-      'Architected a multi-agent LangGraph pipeline — elicit → plan → task-decompose → generate → compose → compile → repair — with resumable, checkpointed state.',
-      'Built a dual-RAG layer over a pgvector store: the project’s own generated code and a shared, curated Unity component library, so later agents extend prior work instead of regenerating it.',
-      'Engineered provider-agnostic, schema-constrained LLM output (Groq/Gemini/OpenRouter) with JSON-mode + a repair-tolerant parser, eliminating a class of malformed-output failures.',
-      'Built a Roslyn compile gate that validates generated C# against Unity assemblies in ~2s, versus ~2 minutes for a full Unity Editor round-trip.',
-      'Implemented a self-repair loop that feeds compiler errors back to the model, regenerates only the broken file, and recompiles — proven on a real project: 11 compile errors to 0.',
-      'Solved headless Unity 6 CI licensing — no documented path exists for entitlement licensing — by driving Unity.Licensing.Client directly, then shipped automated, green WebGL builds via GitHub Actions + GameCI.',
-      'Designed a composition-manifest system so scene wiring is executed by a real Unity Editor script instead of LLM-authored code, structurally eliminating hallucinated API calls for that task class.',
-    ],
-    links: [
-      { label: 'Live site', href: 'https://gaeon.in' },
-      { label: 'GitHub', href: 'https://github.com/akshaygumma/gamedev-ai-assistant' },
-    ],
-    kind: 'flagship',
-    art: 'pipeline',
-    accent: ACCENTS.violet,
-  },
-
-  /* ---------------- AI / ML ---------------- */
-  {
-    slug: 'ml-pipeline',
-    name: 'Reproducible ML Pipeline',
-    tagline: 'DVC + MLflow, end to end',
-    description:
-      'A fully reproducible ML pipeline — preprocess, train, evaluate — orchestrated as DVC stages and re-runnable with a single command.',
-    tech: ['Python', 'scikit-learn', 'DVC', 'MLflow', 'DagsHub'],
-    bullets: [
-      'Versioned datasets, models, and pipelines with DVC; tracked parameters, metrics, and artifacts in MLflow.',
-      'Collaborated via DagsHub remote storage and a hosted MLflow UI.',
-      'Trained and evaluated a Random Forest classifier with tracked hyperparameters, applying MLOps best practices for reproducibility.',
-    ],
-    links: [
-      { label: 'DagsHub', href: 'https://dagshub.com/akshaygumma/ml-pipeline' },
-      { label: 'GitHub', href: 'https://github.com/akshaygumma/diabetes-mlops-pipeline' },
-    ],
-    kind: 'ml',
-    art: 'chart',
-    accent: ACCENTS.cyan,
-  },
-  {
-    slug: 'ann-regression',
-    name: 'ANN Regression',
-    tagline: 'MLflow registry, serving & Docker',
-    description:
-      'A Keras ANN for regression with tuned hyperparameters, tracked experiments, and a containerized production-style serving endpoint.',
-    tech: ['Python', 'Keras', 'scikit-learn', 'MLflow', 'Hyperopt', 'Docker'],
-    bullets: [
-      'Tuned learning rate and momentum via Hyperopt (TPE); tracked experiments in MLflow.',
-      'Registered the best model to the MLflow Model Registry and served it as a REST API.',
-      'Containerized the serving endpoint with Docker for scalable, production-style deployment.',
-    ],
-    links: [{ label: 'GitHub', href: 'https://github.com/akshaygumma/mlflow-deep-learning' }],
-    kind: 'ml',
-    art: 'neural',
-    accent: ACCENTS.blue,
-  },
-  {
-    slug: 'snake-bite-classification',
-    name: 'Snake-Bite Classification',
-    tagline: 'MobileNetV2 transfer learning',
-    description:
-      'A transfer-learning classifier over snake bite-mark images, built with a preprocessing and augmentation pipeline. Awarded KSCST government research funding.',
-    tech: ['TensorFlow', 'Keras', 'CNN', 'Computer Vision'],
-    bullets: [
-      'Built a transfer-learning classifier over bite-mark images with preprocessing and augmentation.',
-      'Awarded KSCST government research funding (2022–23).',
-    ],
-    links: [],
-    kind: 'ml',
-    art: 'vision',
-    accent: ACCENTS.rose,
-  },
-
-  /* ---------------- Shipped games ----------------
-   * NOTE: the copy below is deliberately minimal — it only states what is
-   * known for certain. Replace each `description`/`bullets` with the real
-   * genre, your specific role, platform and any launch numbers, and add
-   * store links where they exist.
-   */
+  /* ---------------- Flagship ---------------- */
   {
     slug: 'faeterra',
     name: 'FaeTerra',
@@ -151,11 +67,23 @@ export const projects: Project[] = [
       'Developed player-facing UI across collection, deck building and match flow, plus internal tooling used by the team.',
       'Optimized runtime performance and memory for target PC hardware through to release.',
     ],
-    links: [{ label: 'Steam', href: 'https://store.steampowered.com/app/3011470/FaeTerra/' }],
-    kind: 'game',
+    links: [{ label: 'Play on Steam', href: 'https://store.steampowered.com/app/3011470/FaeTerra/' }],
+    kind: 'flagship',
     art: 'battler',
     accent: ACCENTS.indigo,
+    stats: [
+      { value: '121', label: 'Creatures' },
+      { value: '13', label: 'Elemental types' },
+      { value: 'PvP', label: 'Ranked & casual' },
+      { value: 'May 2025', label: 'Released' },
+    ],
+    loop: ['Collect', 'Evolve', 'Build team', 'Battle', 'Climb ranks'],
   },
+
+  /* ---------------- Games ----------------
+   * TODO: add store links where they exist —
+   * { label: 'Google Play', href: '...' }
+   */
   {
     slug: 'multiplayer-pool',
     name: 'AI-Driven Multiplayer Pool',
@@ -184,11 +112,11 @@ export const projects: Project[] = [
       'Developed gameplay and progression systems on a modular, pattern-based architecture.',
       'Optimized runtime performance and memory for a broad range of mobile devices.',
     ],
-    // TODO: add the store link — { label: 'Google Play', href: '...' }
     links: [],
     kind: 'game',
     art: 'iso',
     accent: ACCENTS.amber,
+    status: 'Released',
   },
   {
     slug: 'lifestyle-vs-carbon-footprints',
@@ -201,72 +129,141 @@ export const projects: Project[] = [
       'Implemented the simulation and scoring systems mapping player choices to footprint outcomes.',
       'Built the UI and data presentation layer for the mobile release.',
     ],
-    // TODO: add the store link — { label: 'Google Play', href: '...' }
     links: [],
     kind: 'game',
     art: 'eco',
     accent: ACCENTS.teal,
+    status: 'Released',
+  },
+
+  /* ---------------- Game AI & tools ---------------- */
+  {
+    slug: 'gaeon-ai',
+    name: 'Gaeon AI',
+    tagline: 'AI game-generation platform for Unity',
+    description:
+      'An autonomous multi-agent platform that turns a plain-English game idea into a compiling Unity project — planning the architecture, generating C# scripts, wiring the scene and self-repairing compile errors, then shipping WebGL builds through CI.',
+    tech: ['Unity 6', 'C#', 'Roslyn / .NET', 'Python', 'LangGraph', 'pgvector', 'GameCI'],
+    bullets: [
+      'Built a Roslyn compile gate that validates generated C# against Unity assemblies in ~2s, versus ~2 minutes for a full Unity Editor round-trip, with a self-repair loop proven on a real project: 11 compile errors to 0.',
+      'Designed a composition-manifest system so scene wiring is executed by a real Unity Editor script instead of LLM-authored code; solved headless Unity 6 CI licensing to ship automated WebGL builds via GitHub Actions + GameCI.',
+      'Architected a multi-agent LangGraph pipeline — elicit → plan → task-decompose → generate → compose → compile → repair — backed by RAG over a curated Unity component library.',
+    ],
+    links: [
+      { label: 'Live site', href: 'https://gaeon.in' },
+      { label: 'GitHub', href: 'https://github.com/akshaygumma/gamedev-ai-assistant' },
+    ],
+    kind: 'tool',
+    art: 'pipeline',
+    accent: ACCENTS.violet,
+  },
+
+  /* ---------------- Other work (AI / ML) ---------------- */
+  {
+    slug: 'ml-pipeline',
+    name: 'Reproducible ML Pipeline',
+    tagline: 'DVC + MLflow, end to end',
+    description:
+      'A fully reproducible ML pipeline — preprocess, train, evaluate — orchestrated as DVC stages and re-runnable with a single command.',
+    tech: ['Python', 'scikit-learn', 'DVC', 'MLflow'],
+    bullets: [],
+    links: [{ label: 'GitHub', href: 'https://github.com/akshaygumma/diabetes-mlops-pipeline' }],
+    kind: 'other',
+    art: 'chart',
+    accent: ACCENTS.cyan,
+  },
+  {
+    slug: 'ann-regression',
+    name: 'ANN Regression',
+    tagline: 'MLflow registry, serving & Docker',
+    description:
+      'A Keras ANN for regression with Hyperopt-tuned hyperparameters, an MLflow model registry, and a containerized REST serving endpoint.',
+    tech: ['Python', 'Keras', 'MLflow', 'Docker'],
+    bullets: [],
+    links: [{ label: 'GitHub', href: 'https://github.com/akshaygumma/mlflow-deep-learning' }],
+    kind: 'other',
+    art: 'neural',
+    accent: ACCENTS.blue,
+  },
+  {
+    slug: 'snake-bite-classification',
+    name: 'Snake-Bite Classification',
+    tagline: 'MobileNetV2 transfer learning',
+    description:
+      'A transfer-learning classifier over snake bite-mark images. Awarded KSCST government research funding (2022–23).',
+    tech: ['TensorFlow', 'Keras', 'Computer Vision'],
+    bullets: [],
+    links: [],
+    kind: 'other',
+    art: 'vision',
+    accent: ACCENTS.rose,
   },
 ]
 
 export const skills = [
   {
-    category: 'Agentic AI & LLMs',
-    accent: ACCENTS.violet,
+    category: 'Engine & Gameplay',
+    accent: ACCENTS.indigo,
     items: [
-      'LangGraph',
-      'Multi-agent orchestration',
-      'RAG',
-      'Prompt engineering',
-      'Structured outputs / tool use',
-      'LLM evals',
-      'Groq',
-      'Gemini',
-      'OpenAI APIs',
+      'Unity',
+      'C#',
+      'C++',
+      'Gameplay systems',
+      'Progression & economy',
+      'Game UI',
+      'Editor tooling',
     ],
   },
   {
-    category: 'Retrieval & Data',
-    accent: ACCENTS.cyan,
-    items: ['pgvector', 'sentence-transformers', 'PostgreSQL', 'Supabase', 'Semantic search'],
-  },
-  {
-    category: 'Backend & Infra',
-    accent: ACCENTS.blue,
-    items: ['Python', 'FastAPI', 'REST APIs', 'Async', 'Docker', 'GitHub Actions (CI/CD)'],
-  },
-  {
-    category: 'Languages',
+    category: 'Game AI',
     accent: ACCENTS.emerald,
-    items: ['Python', 'C#', 'C++', 'SQL'],
+    items: [
+      'State machines',
+      'Rule-based AI',
+      'NPC decision-making',
+      'Unity ML-Agents',
+      'Unity Sentis',
+      'Difficulty tuning',
+    ],
   },
   {
-    category: 'MLOps',
+    category: 'Multiplayer & Backend',
+    accent: ACCENTS.cyan,
+    items: ['Async PvP', 'Matchmaking', 'Real-time sync', 'Firebase', 'Agora (voice/video)'],
+  },
+  {
+    category: 'Architecture',
     accent: ACCENTS.amber,
-    items: ['MLflow', 'DVC', 'DagsHub', 'Hyperopt', 'Experiment tracking', 'Model versioning'],
+    items: ['MVC', 'State', 'Strategy', 'Factory', 'Modular systems', 'Performance & memory'],
   },
   {
-    category: 'Game & Realtime',
-    accent: ACCENTS.indigo,
-    items: ['Unity', 'Unity ML-Agents', 'Unity Sentis', 'Firebase', 'Agora', 'Multiplayer sync'],
+    category: 'Platforms & Build',
+    accent: ACCENTS.blue,
+    items: ['PC / Steam', 'Android / iOS', 'WebGL', 'GameCI', 'GitHub Actions'],
+  },
+  {
+    category: 'AI-Assisted Dev',
+    accent: ACCENTS.violet,
+    items: ['Roslyn', 'Python', 'LangGraph', 'RAG', 'LLM tooling', 'FastAPI'],
   },
 ]
 
 export const experience = {
-  role: 'Software Engineer',
+  role: 'Game Developer (Software Engineer)',
   company: 'Juego Studios Pvt Ltd',
   period: 'Aug 2023 — Present',
   bullets: [
-    'Own end-to-end feature development — architecture, implementation, optimization, deployment — for real-time apps on mobile and PC (C#, Unity).',
-    'Built intelligent agent-behavior systems (state machines, rule-based AI, Unity ML-Agents) for human-like NPC decision-making.',
-    'Prototyped AI-assisted workflows with Unity Sentis (on-device neural inference) and generative-AI tooling for rapid experimentation.',
-    'Designed modular, pattern-based architectures (MVC, Strategy, Factory, State) for extensible systems.',
+    'Own end-to-end feature development — architecture, implementation, optimization, deployment — for Unity games on mobile and PC, including the Steam release of FaeTerra.',
+    'Built intelligent agent-behaviour systems (state machines, rule-based AI, Unity ML-Agents) for human-like NPC decision-making.',
     'Engineered real-time networking, sync, and voice/video (Firebase, Agora) for multiplayer experiences reaching 1000 users.',
-    'Optimized runtime performance and memory across platforms.',
+    'Designed modular, pattern-based architectures (MVC, Strategy, Factory, State) for extensible gameplay systems.',
+    'Optimized runtime performance and memory across a broad range of mobile and PC hardware.',
+    'Prototyped AI-assisted workflows with Unity Sentis (on-device neural inference) and generative-AI tooling.',
   ],
 }
 
 export const achievements = [
-  'KSCST government research funding — Snake-Bite Classification (2022–23)',
+  'Shipped on Steam — FaeTerra (2025)',
   '100xEngineers Generative AI Hackathon (2024)',
+  'KSCST government research funding (2022–23)',
 ]
