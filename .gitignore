@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Claude Code skills (installed locally)
+.claude/skills/
+skills-lock.json
